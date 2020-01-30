@@ -3,9 +3,12 @@ class ReservationsController < ApplicationController
 
   # GET /reservations
   def index
-    @reservations = Reservation.all
+    @reservations = Reservation.all.includes(:movie).each do |reservation|
+      puts(reservation.movie.name)
+      reservation.movie.name  # this gives you the name of the parent
+    end
 
-    render json: @reservations
+    render json: @reservations.to_json(include: :movie)
   end
 
   # GET /reservations/1

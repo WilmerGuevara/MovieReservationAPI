@@ -3,6 +3,13 @@ class MoviesController < ApplicationController
 
   # GET /movies
   def index
+    if params[:start_date] && params[:end_date]
+      start_date = params[:start_date]
+      end_date = params[:end_date]
+      @movies = Movie.where('start_date >= ? AND end_date <= ?', start_date, end_date).all
+      
+      return render json: @movies
+    end
     @movies = Movie.all
 
     render json: @movies
